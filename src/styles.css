@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --color-background: hsl(40 45% 96%);
+  --color-foreground: hsl(220 20% 18%);
+  --color-card: hsl(40 30% 99%);
+  --color-card-foreground: hsl(220 20% 18%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(220 20% 18%);
+  --color-primary: hsl(210 75% 48%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(40 55% 90%);
+  --color-secondary-foreground: hsl(30 50% 30%);
+  --color-muted: hsl(35 25% 91%);
+  --color-muted-foreground: hsl(220 10% 48%);
+  --color-accent: hsl(22 92% 56%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(35 30% 87%);
+  --color-input: hsl(35 25% 88%);
+  --color-ring: hsl(210 75% 48%);
+  --color-tom-blue: hsl(210 75% 48%);
+  --color-jerry-brown: hsl(28 55% 42%);
+  --color-cheese-yellow: hsl(42 95% 55%);
+  --color-accent-warm: hsl(22 92% 56%);
+  --radius-lg: 1rem;
+  --radius-md: calc(1rem - 2px);
+  --radius-sm: calc(1rem - 4px);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility pattern-dots-hero {
+  background-image: radial-gradient(
+    circle,
+    hsl(0 0% 100% / 0.12) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounceSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@utility animate-fade-up {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility animate-fade-in {
+  animation: fadeIn 0.25s ease-out both;
+}
+
+@utility animate-bounce-soft {
+  animation: bounceSoft 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-soft,
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none;
+  }
+}

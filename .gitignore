@@ -1,0 +1,28 @@
+# deps & build
+node_modules/
+.vercel/
+.output/
+.nitro/
+.tanstack/
+dist/
+*.tsbuildinfo
+
+# env & logs
+.env
+.env.*
+!.env.example
+*.log
+
+# platform / local
+.grok/
+artifacts/
+screenshots/
+attachments/
+public/__grok/
+.project_id
+AGENTS.md
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
