@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Clapperboard, Menu, Play, X } from "lucide-react";
+import { BookOpen, Film, Menu, Play, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -12,25 +12,24 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-card/95 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2.5 group min-w-0">
+        <Link to="/" className="flex items-center gap-2.5 group">
           <img
-            src="/tom.png"
-            alt="Tom"
-            className="w-10 h-10 rounded-xl object-cover shadow-sm transition-transform group-hover:scale-105 group-hover:rotate-3"
+            src="/tom.jpg"
+            alt="Tom & Jerry"
+            width={36}
+            height={36}
+            fetchPriority="high"
+            decoding="sync"
+            className="w-9 h-9 rounded-xl object-cover shadow-sm transition-transform group-hover:scale-105 group-hover:rotate-3"
           />
-          <div className="min-w-0">
-            <span className="font-display text-lg text-foreground leading-none block">
+          <div>
+            <span className="font-display text-lg text-foreground leading-none">
               Tom & Jerry
             </span>
             <span className="hidden sm:block text-[10px] text-muted-foreground font-semibold tracking-wider uppercase">
               Classic Archive
             </span>
           </div>
-          <img
-            src="/jerry.png"
-            alt="Jerry"
-            className="hidden sm:block w-10 h-10 rounded-xl object-cover shadow-sm ml-1 transition-transform group-hover:scale-105 group-hover:-rotate-3"
-          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
@@ -45,7 +44,7 @@ export function Header() {
             asChild
           >
             <Link to="/">
-              <Clapperboard className="w-3.5 h-3.5 mr-1.5" />
+              <Film className="w-3.5 h-3.5 mr-1.5" />
               全部剧集
             </Link>
           </Button>
@@ -102,7 +101,7 @@ export function Header() {
               className="justify-start rounded-xl"
             >
               <Link to="/" onClick={() => setOpen(false)}>
-                <Clapperboard className="w-4 h-4 mr-2" />
+                <Film className="w-4 h-4 mr-2" />
                 全部剧集
               </Link>
             </Button>

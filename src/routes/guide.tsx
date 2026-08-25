@@ -19,7 +19,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GUIDE_OSCAR_CHIPS, thumbnailOf } from "@/lib/episodes";
 
-export const Route = createFileRoute("/guide")({ component: GuidePage });
+export const Route = createFileRoute("/guide")({
+  component: GuidePage,
+  head: () => ({
+    links: [{ rel: "preload", as: "image", href: "/guide-hero.jpg" }],
+  }),
+});
 
 function Section({
   title,
@@ -166,11 +171,16 @@ function GuidePage() {
     <div className="min-h-screen">
       <section className="relative overflow-hidden bg-linear-to-br from-tom-blue to-accent-warm py-10 md:py-14">
         <div className="absolute inset-0 pattern-dots-hero" />
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col items-center text-center">
           <img
-            src="/jerry.png"
-            alt="Jerry"
-            className="w-44 md:w-56 h-auto rounded-2xl shadow-2xl border-4 border-white/20 mb-5 mx-auto"
+            src="/guide-hero.jpg"
+            alt="Tom and Jerry Classic Title"
+            width={356}
+            height={287}
+            fetchPriority="high"
+            decoding="sync"
+            className="w-44 md:w-56 h-auto rounded-2xl shadow-2xl border-4 border-white/20 mb-5"
           />
           <div className="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white text-xs font-bold rounded-full px-3 py-1.5 mb-3 border border-white/20">
             <BookOpen className="w-3.5 h-3.5" />
@@ -190,7 +200,7 @@ function GuidePage() {
               asChild
             >
               <Link to="/">
-                <Clapperboard className="w-4 h-4 mr-2" />
+                <Film className="w-4 h-4 mr-2" />
                 浏览全部剧集
               </Link>
             </Button>
@@ -228,6 +238,7 @@ function GuidePage() {
                 </div>
               </Link>
             ))}
+          </div>
           </div>
         </div>
       </section>

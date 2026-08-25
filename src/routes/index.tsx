@@ -32,7 +32,12 @@ import {
   type Episode,
 } from "@/lib/episodes";
 
-export const Route = createFileRoute("/")({ component: Home });
+export const Route = createFileRoute("/")({
+  component: Home,
+  head: () => ({
+    links: [{ rel: "preload", as: "image", href: "/jerry.jpg" }],
+  }),
+});
 
 type FilterKey = "all" | "winner" | "nominated";
 
@@ -161,8 +166,12 @@ function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex justify-center mb-5">
             <img
-              src="/jerry.png"
+              src="/jerry.jpg"
               alt="Tom and Jerry"
+              width={1280}
+              height={720}
+              fetchPriority="high"
+              decoding="sync"
               className="w-full max-w-xl h-auto rounded-2xl shadow-2xl border-4 border-white/20"
             />
           </div>
