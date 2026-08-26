@@ -68,11 +68,11 @@ function WatchPage() {
     setFailed(false);
     const current = sources[sourceIndex];
     if (!current) return;
-    if (current.isNativeVideo || current.isProxyStream) {
+    if (current.isNativeVideo) {
       failoverTimer.current = window.setTimeout(() => {
         if (sourceIndex < sources.length - 1) setSourceIndex((i) => i + 1);
         else setFailed(true);
-      }, 10000);
+      }, current.failoverMs ?? 10000);
     }
     return () => {
       if (failoverTimer.current) window.clearTimeout(failoverTimer.current);
@@ -128,7 +128,7 @@ function WatchPage() {
                     controls
                     autoPlay
                     playsInline
-                    preload="auto"
+                    preload={current.platform === "r2" ? "metadata" : "auto"}
                     className="absolute inset-0 w-full h-full bg-black"
                     onError={onError}
                     onLoadedMetadata={clearFailover}

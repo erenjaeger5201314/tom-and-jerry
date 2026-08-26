@@ -1,4 +1,5 @@
 import raw from "@/data/episodes.json";
+import { r2Enabled, r2Url } from "@/lib/video-cdn";
 
 export const ARCHIVE_ITEM = "tom-and-jerry-classic-hanna-barbera-1940";
 export const TOTAL_EPISODES = 114;
@@ -38,11 +39,11 @@ export type Episode = RawEpisode & {
 };
 
 export type VideoSource = {
-  platform: "archive-direct" | "dailymotion" | "proxy" | "archive";
+  platform: "r2" | "archive" | "dailymotion" | "archive-direct";
   label: string;
   embedUrl: string;
   isNativeVideo?: boolean;
-  isProxyStream?: boolean;
+  failoverMs?: number;
 };
 
 const RAW = raw as RawEpisode[];
@@ -103,11 +104,13 @@ export function archiveDownload(file: string) {
 }
 
 export function previewUrl(ep: Episode) {
-  if (ep.dailymotionId) {
-    return `${dailymotionEmbed(ep.dailymotionId)}&autoplay=1&mute=1&controls=0&api=postMessage&queue-enable=0&sharing-enable=0&ui-logo=0`;
-  }
+  const own = r2Url(ep.id);
+  if (own) return own;
   if (ep.archiveFile) {
     return `${archiveEmbed(ep.archiveFile)}?autoplay=1`;
+  }
+  if (ep.dailymotionId) {
+    return `${dailymotionEmbed(ep.dailymotionId)}&autoplay=1&mute=1&controls=0&api=postMessage&queue-enable=0&sharing-enable=0&ui-logo=0`;
   }
   return "";
 }
@@ -116,32 +119,37 @@ export function videoSources(id: number): VideoSource[] {
   const ep = getEpisode(id);
   if (!ep) return [];
   const sources: VideoSource[] = [];
+  const own = r2Url(id);
+  if (own) {
+    sources.push({
+      platform: "r2",
+      label: "在线播放",
+      embedUrl: own,
+      isNativeVideo: true,
+      failoverMs: 20000,
+    });
+  }
   if (ep.archiveFile) {
     sources.push({
-      platform: "archive-direct",
-      label: "高速直连 (推荐)",
-      embedUrl: archiveDownload(ep.archiveFile),
-      isNativeVideo: true,
+      platform: "archive",
+      label: own ? "Archive.org" : "在线播放",
+      embedUrl: archiveEmbed(ep.archiveFile),
     });
   }
   if (ep.dailymotionId) {
     sources.push({
       platform: "dailymotion",
-      label: "Dailymotion (海外)",
+      label: "Dailymotion",
       embedUrl: dailymotionEmbed(ep.dailymotionId),
     });
   }
-  if (ep.archiveFile) {
+  if (ep.archiveFile && !own) {
     sources.push({
-      platform: "proxy",
-      label: "国内代理",
+      platform: "archive-direct",
+      label: "Archive 直链",
       embedUrl: archiveDownload(ep.archiveFile),
       isNativeVideo: true,
-    });
-    sources.push({
-      platform: "archive",
-      label: "Archive.org",
-      embedUrl: archiveEmbed(ep.archiveFile),
+      failoverMs: 4000,
     });
   }
   return sources;
@@ -149,10 +157,12 @@ export function videoSources(id: number): VideoSource[] {
 
 export function hasVideo(id: number) {
   const ep = getEpisode(id);
-  return Boolean(ep?.dailymotionId || ep?.archiveFile);
+  return Boolean(r2Enabled() || ep?.dailymotionId || ep?.archiveFile);
 }
 
 export function downloadUrl(ep: Episode) {
+  const own = r2Url(ep.id);
+  if (own) return own;
   if (!ep.archiveFile) return "";
   return archiveDownload(ep.archiveFile);
 }

@@ -13,6 +13,14 @@ dist/
 !.env.example
 *.log
 
+# local video encode / R2
+originals/
+encoded/
+videos/
+*.mp4
+.wrangler/
+
+
 # platform / local
 .grok/
 artifacts/

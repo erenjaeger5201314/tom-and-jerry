@@ -1,0 +1,8 @@
+name = "tom-and-jerry-classic-archive"
+compatibility_date = "2026-08-01"
+
+# Videos live in R2, not in this git repo.
+# Create the bucket once:  npx wrangler r2 bucket create tom-jerry-films
+[[r2_buckets]]
+binding = "VIDEOS"
+bucket_name = "tom-jerry-films"
